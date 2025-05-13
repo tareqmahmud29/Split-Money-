@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Split Friend Money</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Split Money Among Friends</h1>
+    <form id="friendForm">
+      <div id="inputs">
+        <!-- Inputs will go here -->
+      </div>
+      <button type="button" onclick="addFriend()">➕ Add Friend</button>
+      <button type="submit">💰 Calculate</button>
+    </form>
+
+    <div id="results"></div>
+  </div>
+
+  <script>
+    let count = 0;
+
+    function addFriend() {
+      const inputsDiv = document.getElementById("inputs");
+      const friendInput = document.createElement("div");
+      friendInput.classList.add("friend-input");
+
+      friendInput.innerHTML = `
+        <input type="text" name="name${count}" placeholder="Friend's name" required />
+        <input type="number" name="amount${count}" placeholder="Amount spent" step="0.01" required />
+      `;
+      inputsDiv.appendChild(friendInput);
+      count++;
+    }
+
+    document.getElementById("friendForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const names = document.querySelectorAll('input[type="text"]');
+      const amounts = document.querySelectorAll('input[type="number"]');
+
+      let friends = [];
+      for (let i = 0; i < names.length; i++) {
+        friends.push({
+          name: names[i].value,
+          spent: parseFloat(amounts[i].value),
+        });
+      }
+
+      const total = friends.reduce((acc, f) => acc + f.spent, 0);
+      const fairShare = total / friends.length;
+
+      let resultHTML = `<h2>Results</h2>`;
+      resultHTML += `<p>Total Spent: ${total.toFixed(2)}</p>`;
+      resultHTML += `<p>Each Should Pay: ${fairShare.toFixed(2)}</p>`;
+      resultHTML += `<ul>`;
+
+      friends.forEach(friend => {
+        const balance = friend.spent - fairShare;
+        if (balance > 0) {
+          resultHTML += `<li><strong>${friend.name}</strong> should receive ${balance.toFixed(2)}</li>`;
+        } else if (balance < 0) {
+          resultHTML += `<li><strong>${friend.name}</strong> should pay ${(-balance).toFixed(2)}</li>`;
+        } else {
+          resultHTML += `<li><strong>${friend.name}</strong> is settled.</li>`;
+        }
+      });
+
+      resultHTML += `</ul>`;
+      document.getElementById("results").innerHTML = resultHTML;
+    });
+
+    // Start with two inputs
+    addFriend();
+    addFriend();
+  </script>
+</body>
+</html>
