@@ -4,36 +4,303 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Split Friend Money</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --secondary: #a29bfe;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --success: #00b894;
+      --info: #0984e3;
+      --warning: #fdcb6e;
+      --danger: #ce5454;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      animation: fadeIn 0.5s ease-in-out;
+      margin-bottom: 40px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      border-bottom: 2px solid var(--secondary);
+      padding-bottom: 8px;
+    }
+
+    #friendForm {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .friend-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .friend-input input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+
+    .friend-input input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+    }
+
+    .delete-btn {
+      background-color: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 18px;
+    }
+
+    .delete-btn:hover {
+      background-color: #b40d0d;
+      transform: scale(1.1);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .add-btn {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .add-btn:hover {
+      background-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .calculate-btn {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .calculate-btn:hover {
+      background-color: #811a1a;
+      transform: translateY(-2px);
+    }
+
+    #results {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    #results p {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+
+    #results ul {
+      list-style-type: none;
+    }
+
+    #results li {
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #results li strong {
+      color: var(--primary);
+    }
+
+    .positive {
+      color: var(--success);
+    }
+
+    .negative {
+      color: var(--danger);
+    }
+
+    .neutral {
+      color: var(--info);
+    }
+
+    .copyright {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      padding: 10px;
+      opacity: 0.8;
+    }
+
+    .copyright a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .copyright a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .friend-input {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+      }
+      
+      .friend-input .delete-btn {
+        align-self: flex-end;
+      }
+      
+      .container {
+        padding: 20px;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+
+      .copyright {
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>Split Money Among Friends</h1>
     <form id="friendForm">
       <div id="inputs">
-        <!-- Inputs will go here -->
+        <!-- Inputs will be added here -->
       </div>
-      <button type="button" onclick="addFriend()">➕ Add Friend</button>
-      <button type="submit">💰 Calculate</button>
+      <div class="buttons">
+        <button type="button" class="add-btn" onclick="addFriend()">
+          <span>➕</span> Add Friend
+        </button>
+        <button type="submit" class="calculate-btn">
+          <span>💰</span> Calculate
+        </button>
+      </div>
     </form>
 
     <div id="results"></div>
   </div>
 
+  <div class="copyright">
+    &copy; <span id="year"></span> - Developed by <a href="https://github.com/tarekmahmud" target="_blank">Tarek Mahmud</a>
+  </div>
+
   <script>
     let count = 0;
+
+    // Set current year in copyright
+    document.getElementById('year').textContent = new Date().getFullYear();
 
     function addFriend() {
       const inputsDiv = document.getElementById("inputs");
       const friendInput = document.createElement("div");
       friendInput.classList.add("friend-input");
+      const currentId = count;
 
       friendInput.innerHTML = `
-        <input type="text" name="name${count}" placeholder="Friend's name" required />
-        <input type="number" name="amount${count}" placeholder="Amount spent" step="0.01" required />
+        <input type="text" name="name${currentId}" placeholder="Friend's name" required />
+        <input type="number" name="amount${currentId}" placeholder="Amount spent" step="0.01" min="0" required />
+        <button type="button" class="delete-btn" onclick="deleteFriend(${currentId})">Delete</button>
       `;
       inputsDiv.appendChild(friendInput);
       count++;
+    }
+
+    function deleteFriend(id) {
+      const friendInputs = document.querySelectorAll('.friend-input');
+      friendInputs.forEach(input => {
+        const nameInput = input.querySelector(`input[name="name${id}"]`);
+        if (nameInput) {
+          input.remove();
+        }
+      });
     }
 
     document.getElementById("friendForm").addEventListener("submit", function (e) {
@@ -44,28 +311,40 @@
 
       let friends = [];
       for (let i = 0; i < names.length; i++) {
-        friends.push({
-          name: names[i].value,
-          spent: parseFloat(amounts[i].value),
-        });
+        if (names[i].value.trim() !== "" && !isNaN(parseFloat(amounts[i].value))) {
+          friends.push({
+            name: names[i].value,
+            spent: parseFloat(amounts[i].value),
+          });
+        }
+      }
+
+      if (friends.length === 0) {
+        document.getElementById("results").innerHTML = `
+          <div style="color: ${getComputedStyle(document.documentElement).getPropertyValue('--danger')}; 
+                      text-align: center; padding: 20px;">
+            Please add at least one friend with valid data.
+          </div>
+        `;
+        return;
       }
 
       const total = friends.reduce((acc, f) => acc + f.spent, 0);
       const fairShare = total / friends.length;
 
       let resultHTML = `<h2>Results</h2>`;
-      resultHTML += `<p>Total Spent: ${total.toFixed(2)}</p>`;
-      resultHTML += `<p>Each Should Pay: ${fairShare.toFixed(2)}</p>`;
+      resultHTML += `<p>Total Spent: <strong>৳${total.toFixed(2)}</strong></p>`;
+      resultHTML += `<p>Each Should Pay: <strong>৳${fairShare.toFixed(2)}</strong></p>`;
       resultHTML += `<ul>`;
 
       friends.forEach(friend => {
         const balance = friend.spent - fairShare;
         if (balance > 0) {
-          resultHTML += `<li><strong>${friend.name}</strong> should receive ${balance.toFixed(2)}</li>`;
+          resultHTML += `<li><strong>${friend.name}</strong> should receive <span class="positive">৳${balance.toFixed(2)}</span></li>`;
         } else if (balance < 0) {
-          resultHTML += `<li><strong>${friend.name}</strong> should pay ${(-balance).toFixed(2)}</li>`;
+          resultHTML += `<li><strong>${friend.name}</strong> should pay <span class="negative">৳${(-balance).toFixed(2)}</span></li>`;
         } else {
-          resultHTML += `<li><strong>${friend.name}</strong> is settled.</li>`;
+          resultHTML += `<li><strong>${friend.name}</strong> is <span class="neutral">settled</span>.</li>`;
         }
       });
 
